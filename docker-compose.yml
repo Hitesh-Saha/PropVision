@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  pricing-api:
+    build:
+      context: ./pricing-api
+      dockerfile: Dockerfile
+    container_name: pricing-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./pricing-api/House Price Dataset.csv:/app/House Price Dataset.csv:ro
+    networks:
+      - property-network
+
+  property-portal-backend:
+    build:
+      context: ./property-portal/backend
+      dockerfile: Dockerfile
+    container_name: property-portal-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - pricing-api
+    environment:
+      - PRICING_API_BASE_URL=http://pricing-api:8080
+    networks:
+      - property-network
+
+  property-portal-frontend:
+    build:
+      context: ./property-portal/frontend
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+    container_name: property-portal-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - property-portal-backend
+    networks:
+      - property-network
+
+networks:
+  property-network:
+    driver: bridge
