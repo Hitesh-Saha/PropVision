@@ -1,6 +1,18 @@
-version: "3.8"
-
 services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - propvision-network
+
   pricing-api:
     build:
       context: ./pricing-api
@@ -11,36 +23,40 @@ services:
     volumes:
       - ./pricing-api/House Price Dataset.csv:/app/House Price Dataset.csv:ro
     networks:
-      - property-network
+      - propvision-network
 
-  property-portal-backend:
+  propvision-backend:
     build:
-      context: ./property-portal/backend
+      context: ./prop-vision-portal/backend
       dockerfile: Dockerfile
-    container_name: property-portal-backend
+    container_name: propvision-backend
     ports:
       - "8000:8000"
     depends_on:
       - pricing-api
-    environment:
-      - PRICING_API_BASE_URL=http://pricing-api:8080
+      - mongodb
+    env_file:
+      - ./prop-vision-portal/backend/.env
     networks:
-      - property-network
+      - propvision-network
 
-  property-portal-frontend:
+  propvision-frontend:
     build:
-      context: ./property-portal/frontend
+      context: ./prop-vision-portal/frontend
       dockerfile: Dockerfile
-      args:
-        - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-    container_name: property-portal-frontend
+    container_name: propvision-frontend
     ports:
       - "3000:3000"
+    env_file:
+      - ./prop-vision-portal/frontend/.env
     depends_on:
-      - property-portal-backend
+      - propvision-backend
     networks:
-      - property-network
+      - propvision-network
 
 networks:
-  property-network:
+  propvision-network:
     driver: bridge
+
+volumes:
+  mongo_data:

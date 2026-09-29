@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, HTTPException
-from classifier.model import get_model_info, predict
+from classifier.classifier import get_model_info, predict
 from models.schemas import HousingFeatures, PredictionResponse
 
 router = APIRouter()

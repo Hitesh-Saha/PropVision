@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ─────────────────────────────────────────────────── */
+body {
+  @apply bg-slate-50 text-slate-900;
+}
+
+a {
+  @apply text-indigo-600 hover:text-indigo-500;
+}
+
+/* ── Auth card ────────────────────────────────────────────── */
+.auth-card {
+  @apply w-full max-w-md bg-white rounded-2xl border border-slate-200 shadow-xl p-8;
+}
+
+/* Logo icon wrapper */
+.logo-icon {
+  @apply w-16 h-16 rounded-2xl flex items-center justify-center;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.45);
+}
+
+/* Form field group */
+.auth-field {
+  @apply flex flex-col gap-1;
+}
+
+.auth-label {
+  @apply text-sm font-semibold text-slate-700;
+}
+
+.auth-input {
+  @apply w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50
+    text-slate-900 placeholder-slate-400 text-sm
+    focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+    transition-all duration-200;
+}
+
+.auth-input:focus {
+  background-color: white;
+}
+
+/* Submit button */
+.auth-submit-btn {
+  @apply w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800
+    text-white font-semibold rounded-xl transition-all duration-200 shadow-sm
+    disabled:opacity-60 disabled:cursor-not-allowed;
+  margin-top: 0.5rem;
+}
+
+/* Error banner */
+.auth-error {
+  @apply flex items-center gap-2 text-sm text-red-700 bg-red-50 border border-red-200
+    rounded-xl px-4 py-3;
+}

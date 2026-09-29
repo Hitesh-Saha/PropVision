@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from classifier.model import load_or_train_model
+from classifier.classifier import load_or_train_model
 from api.v1.pricing import router as pricing_router
 
 @asynccontextmanager
